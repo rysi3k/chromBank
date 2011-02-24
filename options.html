@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<title>chromBank opcje</title>
+	<script type="text/javascript">  
+
+function loadOptions() {
+    document.getElementById("customer").value = localStorage.customer;    
+}
+
+function saveOptions() {	
+	localStorage.customer = document.getElementById("customer").value;
+        localStorage.password = document.getElementById("password").value;
+	document.getElementById('msg').textContent = 'Zapisano!';
+}
+
+function eraseOptions() {	
+	location.reload();
+}
+    </script>
+    <style type="text/css">
+    label {
+        display: block;
+        width: 230px;
+        clear: both;
+    }
+    label input {
+        float: right       
+    }
+    </style>
+</head>
+<body onload="loadOptions()">
+    <label>
+    Login: <input type="text" name="customer" id="customer" />
+    </label>
+    <label>
+    Hasło: <input type="password" name="password" id="password" />
+    </label>
+
+	<button onclick="saveOptions()">Zachowaj</button>	
+	<button onclick="eraseOptions()">Przywróć</button>
+	<div id="msg"></div>
+</body>
+</html>
