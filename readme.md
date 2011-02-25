@@ -1,16 +1,16 @@
-Login i has³o do banku s¹ przechowywane tylko na komputerze u¿ytkownika - nie s¹ nigdzie wysy³ane ani zapisywane.
+Login i hasÅ‚o do banku sÄ… przechowywane tylko na komputerze uÅ¼ytkownika - nie sÄ… nigdzie wysyÅ‚ane ani zapisywane.
 
-rod³a dodatku dostêpne s¹ na GitHubie:
+Å¹rodÅ‚a dodatku dostÄ™pne sÄ… na GitHubie:
 http://github.com/hamczu/chromBank
 
 Historia wersji:
-0.1 - wyœwietlanie ostatnich transakcji konta indywidualnego mBanku
-0.2 - poprawiona strona opcji, obs³uga konta biznesowego, czytelniejszy widok transakcji
+0.1 - wyÅ›wietlanie ostatnich transakcji konta indywidualnego mBanku
+0.2 - poprawiona strona opcji, obsÅ‚uga konta biznesowego, czytelniejszy widok transakcji
 
 Plan rozwoju:
-- opcjonalne zapamiêtywanie loginu/has³a
+- opcjonalne zapamiÄ™tywanie loginu/hasÅ‚a
 - sprawdzanie historii w tle
-- obs³uga kilku rachunków
-- ikona ukazuj¹ liczbê "nieprzeczytanych" transakcji
+- obsÅ‚uga kilku rachunkÃ³w
+- ikona ukazujÄ… liczbÄ™ "nieprzeczytanych" transakcji
 - dodatkowe opcje: liczba i rodzaj transakcji
-- obs³uga wiêkszej iloœci banków
+- obsÅ‚uga wiÄ™kszej iloÅ›ci bankÃ³w
