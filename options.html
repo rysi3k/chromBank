@@ -1,45 +1,76 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	<title>chromBank opcje</title>
-	<script type="text/javascript">  
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <title>chromBank opcje</title>
+        <script type="text/javascript">
+            function loadOptions() {
+                if(localStorage.customer){
+                    document.getElementById("customer").value = localStorage.customer;
+                }
+                if(localStorage.password){
+                    document.getElementById("password").value = localStorage.password;
+                }
+            }
 
-function loadOptions() {
-    document.getElementById("customer").value = localStorage.customer;    
-}
+            function saveOptions() {             
+                localStorage.customer = document.getElementById("customer").value;
+                localStorage.password = document.getElementById("password").value;
+                document.getElementById('msg').textContent = 'Zapisano!';
+                
+                if(window.location.hash == '#popup'){
+                    window.location = 'popup.html';
+                }else{
+                   // window.close();
+                }
+            }
 
-function saveOptions() {	
-	localStorage.customer = document.getElementById("customer").value;
-        localStorage.password = document.getElementById("password").value;
-	document.getElementById('msg').textContent = 'Zapisano!';
-}
-
-function eraseOptions() {	
-	location.reload();
-}
-    </script>
-    <style type="text/css">
-    label {
-        display: block;
-        width: 230px;
-        clear: both;
-    }
-    label input {
-        float: right       
-    }
-    </style>
-</head>
-<body onload="loadOptions()">
-    <label>
-    Login: <input type="text" name="customer" id="customer" />
-    </label>
-    <label>
-    Hasło: <input type="password" name="password" id="password" />
-    </label>
-
-	<button onclick="saveOptions()">Zachowaj</button>	
-	<button onclick="eraseOptions()">Przywróć</button>
-	<div id="msg"></div>
-</body>
+            function cancel() {
+               
+            }
+        </script>
+        <style type="text/css">
+            body {
+                font-family: Arial;
+            }
+            #main {
+                margin: 0 auto;
+                width: 300px;
+                text-align: center;
+            }
+            #main input{
+                width: 200px;
+                font-size: 20px;
+            }
+            #form-box {
+                /*                border: 1px solid #000;*/
+            }
+            label {
+                display: block;
+                width: 230px;
+                clear: both;
+            }
+            label input {
+                float: right
+            }
+            #studio {
+                padding: 20px;
+                background: url('img/favicon.png') no-repeat;
+            }
+        </style>
+    </head>
+    <body onload="loadOptions()">
+        <div id="main">
+            <h1><img src="img/icon48.png" alt=""/>chromBank</h1>
+            <div id="msg"></div>    
+            <div id="form-box">
+                <form id="form" action="" onsubmit="saveOptions();return false;">
+                    <input type="text" name="customer" id="customer" placeholder="Login" /><br/>
+                    <input type="password" name="password" id="password"  placeholder="Hasło" /><br/>
+                    <button>Zachowaj</button>
+                </form>
+                <!--               <button onclick="cancel();">Przywróć</button><br />-->
+            </div>
+        </div>
+    </body>
 </html>

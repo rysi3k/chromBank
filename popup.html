@@ -7,7 +7,7 @@
         <script type="text/javascript">
             var MBANK = 'https://www.mbank.com.pl';
             var FORM = '#MainForm';
-
+            
             var clicked = false;
             var temp;
             
@@ -18,10 +18,12 @@
                         temp.html($(html).find(FORM)); 
                         $('#customer').val(localStorage.customer);
                         $('#password').val(localStorage.password);
-                        $('#confirm').click();
+                        $('#confirm').click();                            
                     }, 'html'); 
                 } else {                  
-                    $('#result li').text('Wprowadź wpierw Login i Hasło do konta na stronie ustawień!')                    
+                    window.location = 'options.html#popup';
+                    //                    $('#result li').text('Wprowadź wpierw Login i Hasło do konta na stronie ustawień!')
+
                 }             
             }
 
@@ -77,21 +79,29 @@
                 return false;
             }
 
-
+        
             function process(html, url){
-                url = url.substr(MBANK.length + 1);         
+                url = url.substr(MBANK.length + 1);
+                if(html.indexOf('errorView') !== -1){
+                    $('#msg').text('Błąd logowania lub połączenia!');
+                    return;
+                }
                 if(url == 'logon.aspx'){
                     $.get(MBANK + "/accounts_list.aspx", function(html){                       
                         temp.html($(html).find(FORM));
                         $('#contextInfo span').text(); // imie i nazwisko
-                        $('#AccountsGrid li:eq(2)').each(function(){
+                        $('#AccountsGrid li:eq(1)').each(function(){
                             if(!$(this).is('.header, .footer')){
                                 $(this).find('p').each(function(){
                                     var cssClass = $(this).attr('class');
                                     if(cssClass == 'Account'){
-                                        console.log($(this).text());
-                                    }else if(cssClass == 'Actions')   {
-                                        $(this).find('a:eq(2)').click();
+                                        //                                        console.log($(this).text());
+                                    }else if(cssClass == 'Actions') {                                      
+                                        if($(this).children().length === 5){
+                                            $(this).find('a:eq(1)').click();
+                                        }else{
+                                            $(this).find('a:eq(2)').click();
+                                        }
                                     }
                                 });
                             }
@@ -102,11 +112,12 @@
                     if($('#account_operations').length){
                         var transactions = [];
                         var html = [];
+                       
                         $('#account_operations li').each(function(){
                             var t = $(this);
                             if(!t.hasClass('header')){
                                 var p = t.children('p');
-                                console.log(p.filter('.OperationDescription'));                               
+                                //                                console.log(p.filter('.OperationDescription'));
                                 var t = {
                                     operationDate: p.filter('.Date').children('span').eq(0).text(),
                                     postingDate: p.filter('.Date').children('span').eq(1).text(),                                   
@@ -122,13 +133,12 @@
                                     t.name = spans.eq(0).text();
                                 }
                                 transactions.push(t);
-                                var date = t['postingDate'];
-                                html.push('<li>' + date + ' '+ t.name + ' <strong>' + t.amount + '</strong></li>');
+                                var date = t['postingDate'];                               
+                                html.push('<tr><td class="date">' + date + '</td><td class="name">'+ t.name + '</td><td class="amount">' + t.amount + '</td></tr>');
                             }                            
                         });
-               
-                        $('#result').empty().html(html.join(''));
-                        
+                        $('#msg').text('');
+                        $('#result').html(html.join(''));                        
                     }else{                        
                         $('#Submit').click();                       
                     }
@@ -138,7 +148,7 @@
         <style type="text/css">
             body {
                 font-family: Gorgia, Arial;
-                font-size: 12px;               
+                font-size: 12px;
             }
             #result {
                 width: 500px;
@@ -148,10 +158,31 @@
                 height: 0;
                 overflow: hidden;
             }
+            td {
+                padding: 2px;
+            }
+            td.name {
+                width: 280px;
+            }
+            td.date {
+                width: 70px;
+            }
+            td.amount {
+                width: 70px;
+                font-weight: bolder;
+                text-align: right;
+            }
+            tr:nth-child(2n){
+                background: #e6e6e6;
+            }
+            tr:nth-child(2n+1){
+
+            }
         </style>
     </head>
     <body>
         <div id="temp"></div>
-        <ul id="result"><li>Loading...</li></ul>
+        <div id="msg">Ładowanie...</div>
+        <table id="result"></table>
     </body>
 </html>
