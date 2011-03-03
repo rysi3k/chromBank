@@ -89,13 +89,17 @@
                 if(url == 'logon.aspx'){
                     $.get(MBANK + "/accounts_list.aspx", function(html){                       
                         temp.html($(html).find(FORM));
-                        $('#contextInfo span').text(); // imie i nazwisko
-                        $('#AccountsGrid li:eq(1)').each(function(){
+                        //console.log($('#contextInfo span').text()); // imie i nazwisko
+                        
+                        $('#AccountsGrid li:eq(1)').each(function(){ // 1 !!!!
+                            var account = [];
                             if(!$(this).is('.header, .footer')){
-                                $(this).find('p').each(function(){
+                                $(this).find('p').each(function(i){
                                     var cssClass = $(this).attr('class');
                                     if(cssClass == 'Account'){
-                                        //                                        console.log($(this).text());
+                                        account[i] = $(this).text();
+                                    }else if(cssClass == 'Amount'){
+                                        account[i] = $(this).text();
                                     }else if(cssClass == 'Actions') {                                      
                                         if($(this).children().length === 5){
                                             $(this).find('a:eq(1)').click();
@@ -105,11 +109,16 @@
                                     }
                                 });
                             }
+                            $('#msg').html(account[0] + '<span style="float: right">saldo: <strong>' + account[1] + '</strong> środki: <strong>' + account[2] + '</strong></span>');
                         })
                     });
-                }else if(url == 'account_oper_list.aspx'){
-                    temp.html($(html).find(FORM));                  
+                }else if(url == 'account_oper_list.aspx'){                  
+                    temp.html($(html).find(FORM));         
                     if($('#account_operations').length){
+                        $.get(MBANK + "/logout.aspx", function(html){                       
+                            
+                        });
+
                         var transactions = [];
                         var html = [];
                        
@@ -137,7 +146,6 @@
                                 html.push('<tr><td class="date">' + date + '</td><td class="name">'+ t.name + '</td><td class="amount">' + t.amount + '</td></tr>');
                             }                            
                         });
-                        $('#msg').text('');
                         $('#result').html(html.join(''));                        
                     }else{                        
                         $('#Submit').click();                       
@@ -173,10 +181,10 @@
                 text-align: right;
             }
             tr:nth-child(2n){
-                background: #e6e6e6;
+               
             }
             tr:nth-child(2n+1){
-
+                 background: #e6e6e6;
             }
         </style>
     </head>
