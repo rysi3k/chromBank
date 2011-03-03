@@ -1,6 +1,6 @@
 Login i hasło do banku są przechowywane tylko na komputerze użytkownika - nie są nigdzie wysyłane ani zapisywane.
 
-Źrodła dodatku dostępne są na GitHubie:
+Źrodła dodatku dostępne są w serwisie GitHub:
 http://github.com/hamczu/chromBank
 
 Historia wersji:
