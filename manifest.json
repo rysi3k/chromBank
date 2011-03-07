@@ -1,6 +1,6 @@
 {
   "name": "chromBank",
-  "version": "0.3.0.1",
+  "version": "0.3.0.2",
   "description": "Dodatek pobiera historię transakcji konta mBank i wyświetla ją w czytelnej formie",
   "background_page": "background.html", 
   "permissions": [
