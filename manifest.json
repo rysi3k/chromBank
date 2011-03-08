@@ -1,18 +1,18 @@
 {
   "name": "chromBank",
-  "version": "0.3.0.2",
+  "version": "0.3.1",
   "description": "Dodatek pobiera historię transakcji konta mBank i wyświetla ją w czytelnej formie",
   "background_page": "background.html", 
   "permissions": [
     "https://www.mbank.com.pl/*"
   ],
   "icons": {
-        "16": "img/icon16.png",
-        "48": "img/icon48.png",
-        "128": "img/icon128.png"
+        "16": "img/16.png",
+        "48": "img/48.png",
+        "128": "img/128.png"
   },
   "browser_action": {
-    "default_icon": "img/icon19.png",
+    "default_icon": "img/19.png",
     "default_title": "Sprawdź historię transakcji!",
     "default_popup": "popup.html"
   },
