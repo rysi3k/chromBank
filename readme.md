@@ -1,17 +1,15 @@
 Login i hasło do banku są przechowywane tylko na komputerze użytkownika - nie są nigdzie wysyłane ani zapisywane.
 
-Źrodła dodatku dostępne są w serwisie GitHub:
+Oryginale źrodła dodatku dostępne są w serwisie GitHub:
 http://github.com/hamczu/chromBank
 
+modyfikacja czyli chrome&Banki na GitHub:
+http://github.com/rysi3k/chrome-Banki
+
 Historia wersji:
-0.1 - wyświetlanie ostatnich transakcji konta indywidualnego mBanku
-0.2 - poprawiona strona opcji, obsługa konta biznesowego, czytelniejszy widok transakcji
-0.3 - szybsze wylogowanie, dodany nagłówek z nr konta, saldem i bieżącymi środkami
+0.1 - notyfikacje o zmianie stanu konta, wyświetlanie wielu kont, przepisanie sporej części wtyczki na inny, modułowy schemat, update jQuery
 
 Plan rozwoju:
-- opcjonalne zapamiętywanie loginu/hasła
-- sprawdzanie historii w tle
-- obsługa kilku rachunków
-- ikona ukazują liczbę "nieprzeczytanych" transakcji
-- dodatkowe opcje: liczba i rodzaj transakcji
-- obsługa większej ilości banków
+- pokazywanie ilości nieprzeczytanych transakcji
+- rozwijana lista transakcji
+- inne banki

@@ -2,80 +2,66 @@
 <html>
     <head>
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-        <title>chromBank opcje</title>
-        <script type="text/javascript">
-            function loadOptions() {
-                if(localStorage.customer){
-                    document.getElementById("customer").value = localStorage.customer;
-                }
-                if(localStorage.password){
-                    document.getElementById("password").value = localStorage.password;
-                }
-            }
-
-            function saveOptions() {             
-                localStorage.customer = document.getElementById("customer").value;
-                localStorage.password = document.getElementById("password").value;
-                document.getElementById('msg').textContent = 'Zapisano!';
-                
-                if(window.location.hash == '#popup'){
-                    window.location = 'popup.html';
-                }else{
-                   // window.close();
-                }
-            }
-
-            function cancel() {
-               
-            }
-        </script>
+        <title>chrome&amp;Banki opcje</title>
         <style type="text/css">
             body {
-                font-family: Arial;
+               font-family: helvetica, arial, sans-serif;
+               font-size:12px;
             }
             #main {
                 margin: 0 auto;
-                width: 300px;
+                width: 350px;
                 text-align: center;
             }
-            #main input{
-                width: 200px;
-                font-size: 20px;
-            }
+
             #form-box {
                 /*                border: 1px solid #000;*/
             }
             label {
-                display: block;
-                width: 230px;
-                clear: both;
+padding-right: 10px;  float:left;   text-align: left;           width: 200px;
+
             }
-            label input {
-                float: right
+            legend {text-align: left;font-weight: bold;}
+            #form input, #form select {
+                float:left; width: 90px;
             }
-            #studio {
-                padding: 20px;
-                background: url('img/favicon.png') no-repeat;
+            #form button {
+                font-weight: bold;font-size: 13px;
             }
-			h1 {
-				background: url('img/48.png') no-repeat;
-				padding-left: 0px;
-				height: 50px;
-			}
+            div {clear:both;}
+            h1 {
+                background: url('img/48.png') no-repeat;
+                padding-left: 30px;
+                height: 50px;
+            }
         </style>
     </head>
-    <body onload="loadOptions()">
+    <body>
         <div id="main">
-            <h1>chromBank</h1>
-            <div id="msg">Dane zostaną zapamiętane<br/> tylko na tym komputerze</div>    
+            <h1>chrome&amp;Banki</h1>
+            <div id="msg">Dane zostaną zapamiętane <b>tylko</b> na tym komputerze<br><br></div>
             <div id="form-box">
-                <form id="form" action="" onsubmit="saveOptions();return false;">
-                    <input type="text" name="customer" id="customer" placeholder="Login" /><br/>
-                    <input type="password" name="password" id="password"  placeholder="Hasło" /><br/>
-                    <button>Zachowaj</button>
+                <form id="form">
+                    <fieldset>
+                    <legend>mBank</legend>
+                    <div><label>Login:</label> <input type="text" name="login[mBank]" /></div>
+                    <div><label>Hasło:</label> <input type="password" name="pass[mBank]" /></div>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Ogólne</legend>
+                        <div><label>Informuj o zmianach stanu konta:</label>
+                        <select name="notis[enable]"><option value="1">Tak</option><option value="0">Nie</option></select></div>
+                        <div><label>Częstotliwość sprawdzania stanu konta:</label>
+                        <select name="notis[interval]">
+                            <option value="900">15 min</option><option value="1800">30 min</option><option value="3600">1 godzina</option>
+                            <option value="7200">2 godziny</option><option value="14400">4 godziny</option><option value="21600">6 godzin</option>
+                            </select></div>
+                    </fieldset>
+                    <br><button>Zapisz zmiany</button>
                 </form>
-                <!--               <button onclick="cancel();">Przywróć</button><br />-->
             </div>
+            <a href="https://github.com/rysi3k/chrome-Banki" style="float:right;"><small>źródła wtyczki na GitHub</small></a>
         </div>
+        <script type="text/javascript" src="options.js"></script>
     </body>
 </html>

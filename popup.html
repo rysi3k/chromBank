@@ -2,169 +2,16 @@
 <html>
     <head>
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-        <title>101</title>        
-        <script type="text/javascript" src="jquery.js"></script>     
-        <script type="text/javascript">
-            var MBANK = 'https://www.mbank.com.pl';
-            var FORM = '#MainForm';
-            
-            var clicked = false;
-            var temp;
-            
-            window.onload = function(){
-                temp = $('#temp');
-                if(localStorage.customer && localStorage.password){
-                    $.get(MBANK, function(html) {                       
-                        temp.html($(html).find(FORM)); 
-                        $('#customer').val(localStorage.customer);
-                        $('#password').val(localStorage.password);
-                        $('#confirm').click();                            
-                    }, 'html'); 
-                } else {                  
-                    window.location = 'options.html#popup';
-                    //                    $('#result li').text('Wprowadź wpierw Login i Hasło do konta na stronie ustawień!')
+        <title>chrome&ampBanki</title>
+        <script type="text/javascript" src="jquery.js"></script>
 
-                }             
-            }
-
-
-            var bIsPosting = false;
-            var bIsActionPosting = false;
-            function doSubmit(addr, target, method, parameters, causesvalidation, resetform, isAction, funct2call) {
-
-                var theform=document.forms[0];
-
-                theform.action = addr;
-                if(target!='_blank' && target!='_new')
-                    theform.target = target;
-                else
-                    theform.target = Math.round(32000 * Math.random());
-                theform.method = method;
-                if(parameters != null)
-                    document.getElementById('__PARAMETERS').value = parameters;
-                if(resetform)
-                    leaveOnlySession(parameters);
-                if (isAction == true) {
-                    bIsActionPosting = true;
-                }
-                if (funct2call != null) {
-                    if (eval(funct2call) == false) {
-                        bIsActionPosting = false;
-                        return false;
-                    }
-                }
-            
-                if(addr.indexOf('/') == 0){
-                    addr = addr.substr(1);
-                }
-              
-                $.post(MBANK + '/' + addr, $(FORM).serialize(), function(data, textStatus, jqXHR){
-                    process(data, this.url);
-                });
-              
-                return false;
-            }
-        
-            function OperationHistoryExport(export_checkbox, checked_url, unchecked_url) {
-                var obj = document.getElementById('Activity_Data');
-                if (obj != null)
-                    obj.value = '';
-
-                if (export_checkbox.checked)
-                {
-                    doSubmit(checked_url, '', 'POST', '', true, false, true, null);                    
-                }
-                else
-                    doSubmit(unchecked_url, '', 'POST', '', true, false, true, null);
-                return false;
-            }
-
-        
-            function process(html, url){
-                url = url.substr(MBANK.length + 1);
-                if(html.indexOf('errorView') !== -1){
-                    $('#msg').text('Błąd logowania lub połączenia!');
-                    return;
-                }
-                if(url == 'logon.aspx'){
-                    $.get(MBANK + "/accounts_list.aspx", function(html){                       
-                        temp.html($(html).find(FORM));
-                        //console.log($('#contextInfo span').text()); // imie i nazwisko
-                        
-                        $('#AccountsGrid li:eq(1)').each(function(){ // 1 !!!!
-                            var account = [];
-                            if(!$(this).is('.header, .footer')){
-                                $(this).find('p').each(function(i){
-                                    var cssClass = $(this).attr('class');
-                                    if(cssClass == 'Account'){
-                                        account[i] = $(this).text();
-                                    }else if(cssClass == 'Amount'){
-                                        account[i] = $(this).text();
-                                    }else if(cssClass == 'Actions') {                                      
-                                        if($(this).children().length === 5){
-                                            $(this).find('a:eq(1)').click();
-                                        }else{
-                                            $(this).find('a:eq(2)').click();
-                                        }
-                                    }
-                                });
-                            }
-                            $('#msg').html(account[0] + '<span style="float: right">saldo: <strong>' + account[1] + '</strong> środki: <strong>' + account[2] + '</strong></span>');
-                        })
-                    });
-                }else if(url == 'account_oper_list.aspx'){                  
-                    temp.html($(html).find(FORM));         
-                    if($('#account_operations').length){
-                        $.get(MBANK + "/logout.aspx", function(html){                       
-                            
-                        });
-
-                        var transactions = [];
-                        var html = [];
-                       
-                        $('#account_operations li').each(function(){
-                            var t = $(this);
-                            if(!t.hasClass('header')){
-                                var p = t.children('p');
-                                //                                console.log(p.filter('.OperationDescription'));
-                                var t = {
-                                    operationDate: p.filter('.Date').children('span').eq(0).text(),
-                                    postingDate: p.filter('.Date').children('span').eq(1).text(),                                   
-                                    amount: p.filter('.Amount').eq(0).text(),
-                                    balance: p.filter('.Amount').eq(1).text()
-                                }
-                                var description = p.filter('.OperationDescription');
-                                t.type = description.children('a').text();
-                                var spans = description.children('span');
-                                if(spans.length == 2){
-                                    t.name = spans.eq(1).text();
-                                }else {
-                                    t.name = spans.eq(0).text();
-                                }
-                                transactions.push(t);
-                                var date = t['postingDate'];                               
-                                html.push('<tr><td class="date">' + date + '</td><td class="name">'+ t.name + '</td><td class="amount">' + t.amount + '</td></tr>');
-                            }                            
-                        });
-                        $('#result').html(html.join(''));                        
-                    }else{                        
-                        $('#Submit').click();                       
-                    }
-                }
-            }
-        </script>
         <style type="text/css">
             body {
                 font-family: Gorgia, Arial;
                 font-size: 12px;
             }
             #result {
-                width: 500px;
-            }
-            #temp {
-                width: 0;
-                height: 0;
-                overflow: hidden;
+                width: 550px;
             }
             td {
                 padding: 2px;
@@ -180,8 +27,12 @@
                 font-weight: bolder;
                 text-align: right;
             }
+            th {
+                font-weight:bold;
+                font-size:14px;
+            }
             tr:nth-child(2n){
-               
+
             }
             tr:nth-child(2n+1){
                  background: #e6e6e6;
@@ -189,8 +40,8 @@
         </style>
     </head>
     <body>
-        <div id="temp"></div>
-        <div id="msg">Ładowanie...</div>
+        <div id="msg"></div>
         <table id="result"></table>
+         <script type="text/javascript" src="popup.js"></script>
     </body>
 </html>
