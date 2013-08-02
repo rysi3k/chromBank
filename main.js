@@ -92,8 +92,8 @@ var mBank = {
         var self = this;
         $.get(this.URL, function(html) {
             self.CONTAINER.html($(html).find('#MainForm'));
-            $('#customer').val(login);
-            $('#password').val(pass);
+            $('#customer',self.CONTAINER).val(login);
+            $('#password',self.CONTAINER).val(pass);
 
             $.post(self.URL + '/logon.aspx', $('#MainForm').serialize(), function(html) {
                 if (html.indexOf('accounts_list.aspx') !== -1) {
@@ -111,7 +111,7 @@ var mBank = {
         var self = this;
         $.get(this.URL + "/accounts_list.aspx", function(html) {
             self.CONTAINER.html($(html).find('#MainForm'));
-            $('#AccountsGrid li:not(.header,.footer)').each(function() {
+            $('#AccountsGrid li:not(.header,.footer)',self.CONTAINER).each(function() {
                 var account = {};
                 $(this).find('p').each(function(i) {
                     var cssClass = $(this).attr('class');
@@ -139,9 +139,76 @@ var mBank = {
 
 };
 
+
+var Inteligo = {
+
+    URL:'https://inteligo.pl/secure',
+    accounts: [],
+    CONTAINER: null,
+
+    init: function(container, login, password, cb) {
+        if (!login || !password) return;
+        var self = this;
+        self.CONTAINER = container;
+        cb = cb || $.noop;
+        this.accounts = [];
+        this.doLogin(login, password, function(result) {
+            if(result!='ok') return cb(result);
+            self.getAccounts(function(result) {
+                if(typeof result == 'object') cb(result);
+            });
+        });
+
+    },
+
+    getName: function() {
+        return 'Inteligo';
+    },
+
+    doLogin: function(login, pass, cb) {
+        cb = cb || $.noop;
+        var self = this;
+        $.get(this.URL, function(html) {
+            html = html.match(/<form[\s\S]*<\/form>/mgi)[0];
+            html = html.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
+            self.CONTAINER.html(html);
+            $('input[name=cif]', self.CONTAINER).val(login);
+            $('input[name=password]',self.CONTAINER).val(pass);
+
+            $.post(self.URL + '/igo2', self.CONTAINER.find('form').serialize(), function(html) {
+                if (html.indexOf('Wyloguj') !== -1 && html.indexOf('Zalogowany:') !== -1) {
+                    html = html.match(/<form[\s\S]*<\/form>/mgi)[0];
+                    html = html.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
+                    self.CONTAINER.html(html);
+                    cb('ok');
+                } else {
+                    cb('Błąd logowania lub połączenia!');
+                }
+            });
+
+        },'html');
+    },
+
+    getAccounts: function(cb) {
+        cb = cb || $.noop;
+        var self = this;
+        $('.accounts .table-list .row_even',self.CONTAINER).each(function() {
+            var account = {};
+            account.name = $(this).find('.nickname').text() + ' ' + $(this).find('.number').text();
+            account.cash = $(this).find('.balance_avail').text();
+            account.balance = $(this).find('.balance_ledger').text();
+            self.accounts.push(account);
+       });
+        if(self.accounts.length>0)  cb(self.accounts);
+        else cb('Brak kont?');
+}
+
+
+};
+
 var Banks = {
 
-    _list: [mBank],
+    _list: [mBank, Inteligo],
     accounts_list: {},
     tout: null,
 
@@ -159,11 +226,11 @@ var Banks = {
         var logins = JSON.parse(localStorage.logins|| '{}');
         var passwords = JSON.parse(localStorage.passwords|| '{}');
         var notis = JSON.parse(localStorage.notis || '{"enable":true, "interval":900}');
-        for(var i in list) {
-             var name = list[i].getName();
+        $.each(list, function(i, e) {
+             var name = this.getName();
              $('div#temp_'+name).remove();
              var div = $('<div>').attr('id', 'temp_'+name).appendTo('body');
-            list[i].init(div, logins[name] || '', passwords[name] || '', function(res) {
+           this.init(div, logins[name] || '', passwords[name] || '', function(res) {
                 if(typeof res !== 'object') {
                      webkitNotifications.createNotification(
                       'img/48.png',  // icon url - can be relative
@@ -173,12 +240,14 @@ var Banks = {
                      notis.enable = false; //wylaczamy notyfikacje by nie nabic licznika niepoprawnych logowan
                     return;
                 }
+
                 if(notis.enable) self.detectChanges(name, res);
                 self.accounts_list[name] = res;
 
                 localStorage.accounts_list = JSON.stringify(self.accounts_list);
             });
-        }
+        });
+
         if(notis.enable) {
             clearTimeout(this.tout);
             this.tout = setTimeout(function() {

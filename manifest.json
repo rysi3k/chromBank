@@ -2,12 +2,13 @@
     "manifest_version":2,
   "name": "chrome&Banki",
   "version": "0.1",
-  "description": "Dodatek pobiera historię transakcji z kont bankowych (w tej chwili mBank) i wyświetla ją w czytelnej formie oraz obsługuje powiadomienia o zmianach stanu konta",
+  "description": "Dodatek pobiera stan konta w banku (w tej chwili mBank) i wyświetla go oraz obsługuje powiadomienia o zmianach stanu konta",
   "background": {
     "page":"background.html"
   },
   "permissions": [
     "https://www.mbank.com.pl/*",
+    "https://inteligo.pl/*",
     "notifications"
   ],
   "icons": {
